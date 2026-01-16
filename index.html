@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CashLeads Network</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #1e3a5f;
+    }
+
+    header a {
+      text-decoration: none;
+      background: #1e3a5f;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    header a:hover {
+      background: #2d5a8a;
+    }
+
+    main {
+      padding-top: 120px;
+    }
+
+    section {
+      padding: 80px 24px;
+      max-width: 1100px;
+      margin: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      margin-bottom: 16px;
+      color: #1e3a5f;
+    }
+
+    .hero p {
+      max-width: 600px;
+      font-size: 18px;
+      color: #475569;
+    }
+
+    .cta-buttons {
+      margin-top: 32px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cta-buttons a {
+      padding: 14px 26px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .cta-buttons a:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      background: #1e3a5f;
+      color: #ffffff;
+    }
+
+    .secondary {
+      border: 2px solid #1e3a5f;
+      color: #1e3a5f;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .stat-box {
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      text-align: center;
+      background: #f8fafc;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .stat-box h3 {
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: #1e3a5f;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 32px;
+    }
+
+    .feature {
+      border: 1px solid #e5e7eb;
+      padding: 32px;
+      border-radius: 14px;
+      background: #f9fafb;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .feature h4 {
+      margin-top: 0;
+      color: #1e3a5f;
+    }
+
+    form {
+      max-width: 520px;
+      margin: auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    form h3 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #1e3a5f;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: 1px solid #cbd5f5;
+      font-size: 15px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .checkbox a {
+      color: #1e3a5f;
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      background: #1e3a5f;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #2d5a8a;
+    }
+
+    footer {
+      background: #1e3a5f;
+      color: #cbd5e1;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .success-message {
+      text-align: center;
+      color: green;
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* Terms of Service Section */
+    #terms {
+      background: #f8fafc;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 60px 24px;
+    }
+
+    #terms h2 {
+      color: #1e3a5f;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    #terms p {
+      max-width: 900px;
+      margin: auto;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>CashLeads Network</h1>
+  <a href="#join">Join the Network</a>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Private Real Estate Contact Network</h2>
+    <p>
+      Submit your information to be listed as a <strong>Cash Buyer</strong> or
+      <strong>Wholesaler</strong> in your local market.  
+      Informational connections only. No brokerage. No representation.
+    </p>
+
+    <div class="cta-buttons">
+      <a href="#join" class="primary">Join the Network</a>
+      <a href="#how" class="secondary">How It Works</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-box">
+        <h3>2,500+</h3>
+        <p>Active Buyers</p>
+      </div>
+      <div class="stat-box">
+        <h3>150+</h3>
+        <p>Markets Covered</p>
+      </div>
+      <div class="stat-box">
+        <h3>$85M+</h3>
+        <p>Deals Closed</p>
+      </div>
+      <div class="stat-box">
+        <h3>98%</h3>
+        <p>Verified Rate</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <h2>Why CashLeads?</h2>
+
+    <div class="features">
+      <div class="feature">
+        <h4>Verified Participants</h4>
+        <p>We focus on serious buyers and active wholesalers operating in real markets.</p>
+      </div>
+      <div class="feature">
+        <h4>Market-Specific</h4>
+        <p>No nationwide spam lists. Contacts are organized by city and market.</p>
+      </div>
+      <div class="feature">
+        <h4>Informational Only</h4>
+        <p>We do not broker, negotiate, or participate in transactions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section id="join">
+    <form id="leadForm">
+      <h3>Join the Network</h3>
+
+      <input name="fullName" type="text" placeholder="Full Name" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <input name="phone" type="tel" placeholder="Phone" required />
+      <input name="city" type="text" placeholder="City / Market" required />
+      <input name="Price" type="number" placeholder="Budget if applicable"/>
+
+      <select name="role" required>
+        <option value="">Select Your Role</option>
+        <option>Cash Buyer</option>
+        <option>Wholesaler</option>
+        <option>Agent / Investor</option>
+      </select>
+
+      <textarea name="intent" placeholder="Briefly describe your intent or criteria"></textarea>
+
+      <div class="checkbox">
+        <input name="agreed" type="checkbox" required />
+        <label>
+          I acknowledge and agree to the 
+          <a href="#terms">Terms of Service</a>.
+        </label>
+      </div>
+
+      <button type="submit">Submit Information</button>
+      <div class="success-message">Thank you! Your info has been submitted.</div>
+    </form>
+  </section>
+
+  <!-- TERMS OF SERVICE -->
+  <section id="terms">
+    <h2>Terms of Service / Legal Disclaimer</h2>
+    <p>
+      <strong>Legal Disclaimer, Limitation of Liability & Data Authorization:</strong><br>
+      This service operates solely as a marketing, data distribution, and informational service. We are not real estate brokers, agents, dealers, attorneys, lenders, advisors, or representatives of any party involved in a real estate transaction.<br><br>
+
+      We do not represent buyers or sellers, do not solicit or negotiate offers, do not provide pricing guidance, and do not participate in or facilitate transactions, contracts, or closings.<br><br>
+
+      Any information provided, including but not limited to property details, buyer interest, pricing ranges, timelines, or contact information, is supplied as-is, for informational purposes only, and may be inaccurate, incomplete, outdated, or unverified. We make no warranties or guarantees, express or implied, regarding accuracy, legality, value, profitability, suitability, or outcome.<br><br>
+
+      All parties are solely responsible for conducting their own independent due diligence, verifying all information, securing professional advice, and complying with all applicable local, state, and federal laws, including licensing, disclosure, advertising, and communication regulations.<br><br>
+
+      Any communication, negotiation, agreement, or transaction occurs exclusively between third parties, without our involvement, control, or responsibility. We are not a party to any transaction and assume no fiduciary duty, obligation, or liability to any user.<br><br>
+
+      To the fullest extent permitted by law, you expressly agree that we shall not be liable for any direct, indirect, incidental, consequential, special, punitive, or economic damages, including but not limited to financial loss, failed transactions, disputes, misrepresentation, loss of profits, or legal claims arising from the use of this service or any information obtained through it.<br><br>
+
+      <strong>Data Use, Disclosure & Contact Authorization:</strong><br>
+      By submitting information or using this service, you expressly authorize us to collect, store, process, and disclose business-related contact information, including but not limited to names, phone numbers, email addresses, business entities, professional roles, and geographic markets, for the sole purpose of providing informational connections and data distribution services.<br><br>
+
+      You acknowledge and agree that contact information may be shared with third parties, including real estate investors, wholesalers, agents, brokers, or related professionals, as part of the service output or at your direction.<br><br>
+
+      You represent that any information you submit is your own or that you have full legal authority to submit and authorize its disclosure.<br><br>
+
+      You consent to being contacted directly by third parties, and you release this service from any responsibility related to the nature, frequency, legality, or content of such communications.<br><br>
+
+      We do not verify the intent, licensing status, compliance, or conduct of any third party receiving or using this information.<br><br>
+
+      Once information is disclosed, we do not control or restrict how third parties store, use, or communicate using that information.<br><br>
+
+      <strong>Indemnification:</strong><br>
+      You agree to indemnify, defend, and hold harmless this service and its operators from any claims, losses, damages, liabilities, costs, or expenses (including reasonable attorneys’ fees) arising from your use of the service, your submitted information, your communications with third parties, or your violation of any applicable law or regulation.<br><br>
+
+      <strong>Governing Law & Venue:</strong><br>
+      This agreement shall be governed by and construed in accordance with the laws of the state in which the service operator is domiciled, without regard to conflict-of-law principles. Any dispute shall be resolved exclusively in the courts of that jurisdiction.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 CashLeads. Informational use only. No brokerage or representation.
+</footer>
+
+<script>
+  // Fade-in sections on scroll
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(section => observer.observe(section));
+
+  // Form submit
+  const form = document.getElementById('leadForm');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Collect form data
+    const formData = {
+      fullName: form.fullName.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      city: form.city.value,
+      role: form.role.value,
+      intent: form.intent.value,
+      agreed: form.agreed.checked
+    };
+
+    try {
+      await fetch('https://hunin55.app.n8n.cloud/webhook/intake/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      // Show success message
+      form.reset();
+      const msg = form.querySelector('.success-message');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 5000);
+
+    } catch (err) {
+      console.error('Form submission error:', err);
+      alert('There was an error submitting the form. Please try again.');
+    }
+  });
+</script>
+
+</body>
+</html>
