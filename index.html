@@ -310,26 +310,26 @@
       <input name="email" type="email" placeholder="Email" required autocomplete="email" />
       <input name="phone" type="tel" placeholder="Phone" required autocomplete="tel" />
       <input name="city" type="text" placeholder="City / Market" required autocomplete="address-level2" />
-      
-      <!-- Price Range -->
+     
+      <!-- Price Range - FIXED: any number allowed -->
       <div class="price-range">
         <div>
-          <input 
-            name="minPrice" 
-            type="number" 
-            placeholder="Min Price ($)" 
-            min="0" 
-            step="1" 
+          <input
+            name="minPrice"
+            type="number"
+            placeholder="Min Price ($)"
+            min="0"
+            inputmode="numeric"
             autocomplete="off"
           />
         </div>
         <div>
-          <input 
-            name="maxPrice" 
-            type="number" 
-            placeholder="Max Price ($)" 
-            min="0" 
-            step="1" 
+          <input
+            name="maxPrice"
+            type="number"
+            placeholder="Max Price ($)"
+            min="0"
+            inputmode="numeric"
             autocomplete="off"
           />
         </div>
@@ -385,91 +385,88 @@
 </footer>
 
 <script>
-  // Fade-in sections on scroll
-  const sections = document.querySelectorAll('section');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.2 });
-  sections.forEach(section => observer.observe(section));
-
-  // Form submit
-  const form = document.getElementById('leadForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const successMsg = form.querySelector('.success-message');
-  const errorMsg = form.querySelector('.error-message');
-
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    // Reset messages
-    successMsg.style.display = 'none';
-    errorMsg.style.display = 'none';
-
-    // Loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-
-    // Collect form data
-    const formData = {
-      fullName: form.fullName.value.trim(),
-      email: form.email.value.trim(),
-      phone: form.phone.value.trim(),
-      city: form.city.value.trim(),
-      minPrice: form.minPrice.value.trim() || null,
-      maxPrice: form.maxPrice.value.trim() || null,
-      role: form.role.value,
-      intent: form.intent.value.trim(),
-      agreed: form.agreed.checked
-    };
-
-    // Optional: Basic validation for price range
-    if (formData.minPrice && formData.maxPrice && Number(formData.minPrice) > Number(formData.maxPrice)) {
-      errorMsg.textContent = 'Min price cannot be higher than max price.';
-      errorMsg.style.display = 'block';
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Information';
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        'https://hunin55.app.n8n.cloud/webhook/intake/signup',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        }
-      );
-
-      console.log('Status:', response.status);
-
-      if (!response.ok) {
-        throw new Error(`Webhook failed with status ${response.status}`);
-      }
-
-      const text = await response.text();
-      console.log('Response:', text);
-
-      // Success
-      form.reset();
-      successMsg.style.display = 'block';
-      setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
-    } catch (err) {
-      console.error('Form submission error:', err);
-      errorMsg.textContent = 'Submission failed. Please try again or check your connection.';
-      errorMsg.style.display = 'block';
-    } finally {
-      // Reset button
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Information';
+// Fade-in sections on scroll
+const sections = document.querySelectorAll('section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
     }
   });
+}, { threshold: 0.2 });
+sections.forEach(section => observer.observe(section));
+
+// Form submit
+const form = document.getElementById('leadForm');
+const submitBtn = document.getElementById('submitBtn');
+const successMsg = form.querySelector('.success-message');
+const errorMsg = form.querySelector('.error-message');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  // Reset messages
+  successMsg.style.display = 'none';
+  errorMsg.style.display = 'none';
+  // Loading state
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+
+  // Collect form data
+  const formData = {
+    fullName: form.fullName.value.trim(),
+    email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
+    city: form.city.value.trim(),
+    minPrice: form.minPrice.value.trim() || null,
+    maxPrice: form.maxPrice.value.trim() || null,
+    role: form.role.value,
+    intent: form.intent.value.trim(),
+    agreed: form.agreed.checked
+  };
+
+  // Optional: Basic validation for price range
+  if (formData.minPrice && formData.maxPrice && Number(formData.minPrice) > Number(formData.maxPrice)) {
+    errorMsg.textContent = 'Min price cannot be higher than max price.';
+    errorMsg.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Information';
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      'https://hunin55.app.n8n.cloud/webhook/intake/signup',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      }
+    );
+
+    console.log('Status:', response.status);
+    if (!response.ok) {
+      throw new Error(`Webhook failed with status ${response.status}`);
+    }
+
+    const text = await response.text();
+    console.log('Response:', text);
+
+    // Success
+    form.reset();
+    successMsg.style.display = 'block';
+    setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
+  } catch (err) {
+    console.error('Form submission error:', err);
+    errorMsg.textContent = 'Submission failed. Please try again or check your connection.';
+    errorMsg.style.display = 'block';
+  } finally {
+    // Reset button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Information';
+  }
+});
 </script>
 </body>
 </html>
