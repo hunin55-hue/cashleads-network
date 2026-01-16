@@ -311,8 +311,8 @@
       <input name="phone" type="tel" placeholder="Phone" required autocomplete="tel" />
       <input name="city" type="text" placeholder="City / Market" required autocomplete="address-level2" />
      
-      <!-- Price Range - FIXED: any number allowed -->
-     <div class="price-range">
+      <!-- Price Range - minPrice is optional -->
+      <div class="price-range">
         <div>
           <input
             name="minPrice"
@@ -321,7 +321,7 @@
             min="0"
             inputmode="numeric"
             autocomplete="off"
-            />
+          />
         </div>
         <div>
           <input
@@ -424,7 +424,7 @@ form.addEventListener('submit', async function(e) {
     agreed: form.agreed.checked
   };
 
-  // Optional: Basic validation for price range
+  // Validation: only check price logic if BOTH fields have values
   if (formData.minPrice && formData.maxPrice && Number(formData.minPrice) > Number(formData.maxPrice)) {
     errorMsg.textContent = 'Min price cannot be higher than max price.';
     errorMsg.style.display = 'block';
@@ -435,7 +435,7 @@ form.addEventListener('submit', async function(e) {
 
   try {
     const response = await fetch(
-      'https://hunin55.app.n8n.cloud/webhook/intake/signup',
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://hunin55.app.n8n.cloud/webhook/intake/signup'),
       {
         method: 'POST',
         headers: {
@@ -470,4 +470,3 @@ form.addEventListener('submit', async function(e) {
 </script>
 </body>
 </html>
-
