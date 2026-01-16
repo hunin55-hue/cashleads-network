@@ -166,6 +166,14 @@
       resize: vertical;
       min-height: 80px;
     }
+    .price-range {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .price-range > div {
+      flex: 1;
+    }
     .checkbox {
       display: flex;
       align-items: flex-start;
@@ -302,7 +310,31 @@
       <input name="email" type="email" placeholder="Email" required autocomplete="email" />
       <input name="phone" type="tel" placeholder="Phone" required autocomplete="tel" />
       <input name="city" type="text" placeholder="City / Market" required autocomplete="address-level2" />
-      <input name="Price" type="number" placeholder="Budget if applicable (e.g. $100000)" min="0" step="1000" />
+      
+      <!-- Price Range -->
+      <div class="price-range">
+        <div>
+          <input 
+            name="minPrice" 
+            type="number" 
+            placeholder="Min Price ($)" 
+            min="0" 
+            step="1" 
+            autocomplete="off"
+          />
+        </div>
+        <div>
+          <input 
+            name="maxPrice" 
+            type="number" 
+            placeholder="Max Price ($)" 
+            min="0" 
+            step="1" 
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
       <select name="role" required>
         <option value="">Select Your Role</option>
         <option>Cash Buyer</option>
@@ -387,11 +419,21 @@
       email: form.email.value.trim(),
       phone: form.phone.value.trim(),
       city: form.city.value.trim(),
-      price: form.Price.value.trim() || null,  // Optional
+      minPrice: form.minPrice.value.trim() || null,
+      maxPrice: form.maxPrice.value.trim() || null,
       role: form.role.value,
       intent: form.intent.value.trim(),
       agreed: form.agreed.checked
     };
+
+    // Optional: Basic validation for price range
+    if (formData.minPrice && formData.maxPrice && Number(formData.minPrice) > Number(formData.maxPrice)) {
+      errorMsg.textContent = 'Min price cannot be higher than max price.';
+      errorMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Information';
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -420,6 +462,7 @@
       setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
     } catch (err) {
       console.error('Form submission error:', err);
+      errorMsg.textContent = 'Submission failed. Please try again or check your connection.';
       errorMsg.style.display = 'block';
     } finally {
       // Reset button
